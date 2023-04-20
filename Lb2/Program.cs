@@ -1,4 +1,8 @@
-﻿public class Node {
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Lb2 {
+
+public class Node {
     public int Value { get; set; }
     public Node Next { get; set; }
             
@@ -11,7 +15,7 @@
 }
 
 public class NodeList {
-    public Node Head { get; set; }
+    public Node Head { get; set; } = null;
     
     public void AddFirst(int value) {
         Node newNode = new Node(value);
@@ -75,6 +79,7 @@ public class NodeList {
     }
     
     public void Sort() { // Bubble sort, descending order
+        if(Head == null) return;
         bool sorting = true;
         Node head = Head;
         while(sorting) {
@@ -87,6 +92,32 @@ public class NodeList {
                     sorting = true;
                 }
                 (a, b) = (b, b.Next);
+            }
+        }
+    }
+    
+    public void SortNodes() {
+        int count = 0;
+        Node start = Head, node, prev, temp;
+        while(start != null) {
+            count++;
+            start = start.Next;
+        }
+        
+        for(int i = 0; i < count; ++i) {
+            node = prev = Head;
+            while(node.Next != null) {
+                if(node.Value < node.Next.Value) {
+                    temp = node.Next;
+                    (node.Next, node.Next.Next) = (node.Next.Next, node);
+                    if(node == Head) {
+                        Head = temp;
+                    } else {
+                        prev.Next = temp;
+                    }
+                }
+                prev = node;
+                node = node.Next;
             }
         }
     }
@@ -156,6 +187,7 @@ public class NodeList {
 -. (79) Перевизначити для списку будь-яку операцію
  */
 
+[ExcludeFromCodeCoverage]
 public class Program {
     public static void Main(string[] args) {
         NodeList list = new NodeList();
@@ -218,4 +250,5 @@ public class Program {
         list += 10;
         Console.WriteLine(list.toString()); // 26 16 16 14 21 56 35 12 14 66 75
     }
+}
 }
