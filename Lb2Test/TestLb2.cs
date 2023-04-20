@@ -42,6 +42,13 @@ public class Tests {
     public void Test_removeOnes() {
         list.RemoveAllWithValue(1);
         Assert.AreEqual("-50 15 5 58 2 3 4 5 -11 6", list.toString());
+        list.AddFirst(1);
+        list.AddFirst(1);
+        list.AddFirst(1);
+        list.AddFirst(1);
+        list.AddFirst(1);
+        list.RemoveAllWithValue(1);
+        Assert.AreEqual("-50 15 5 58 2 3 4 5 -11 6", list.toString());
         
         NodeList list2 = new NodeList();
         list2.RemoveAllWithValue(1);

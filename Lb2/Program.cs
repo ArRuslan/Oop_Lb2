@@ -4,18 +4,18 @@ namespace Lb2 {
 
 public class Node {
     public int Value { get; set; }
-    public Node Next { get; set; }
+    public Node? Next { get; set; }
             
     public Node(int value) : this(value, null) { }
     
-    public Node(int value, Node next) {
+    public Node(int value, Node? next) {
         Value = value;
         Next = next;
     }
 }
 
 public class NodeList {
-    public Node Head { get; set; } = null;
+    public Node? Head { get; set; }
     
     public void AddFirst(int value) {
         Node newNode = new Node(value);
@@ -26,15 +26,15 @@ public class NodeList {
     }
     
     public void AddLast(int value) {
-        Node new_node = new Node(value);
+        Node newNode = new Node(value);
         if(Head == null) {
-            Head = new_node;
+            Head = newNode;
         } else {
             Node last = Head;
             while(last.Next != null) {
                 last = last.Next;
             }
-            last.Next = new_node;
+            last.Next = newNode;
         }
     }
     
@@ -42,7 +42,7 @@ public class NodeList {
         if(Head == null)
             return "";
         string result = "";
-        Node node = Head;
+        Node? node = Head;
         while(node != null) {
             result += $"{node.Value} ";
             node = node.Next;
@@ -55,8 +55,8 @@ public class NodeList {
             return;
         while (Head != null && Head.Value == value)
             Head = Head.Next;
-        Node node = Head;
-        while(node.Next != null) {
+        Node? node = Head;
+        while(node?.Next != null) {
             if(node.Next.Value == value)
                 node.Next = node.Next.Next;
             else
@@ -69,8 +69,8 @@ public class NodeList {
             return;
         while (Head != null && Head.Value % 2 == 0)
             Head = Head.Next;
-        Node node = Head.Next;
-        while(node.Next != null) {
+        Node? node = Head?.Next;
+        while(node?.Next != null) {
             if(node.Next.Value % 2 == 0)
                 node.Next = node.Next.Next;
             else
@@ -81,11 +81,11 @@ public class NodeList {
     public void Sort() { // Bubble sort, descending order
         if(Head == null) return;
         bool sorting = true;
-        Node head = Head;
+        Node? head = Head;
         while(sorting) {
             sorting = false;
-            Node a = head;
-            Node b = head.Next;
+            Node? a = head;
+            Node? b = head?.Next;
             while(a != null && b != null) {
                 if(a.Value < b.Value) {
                     (a.Value, b.Value) = (b.Value, a.Value);
@@ -98,22 +98,23 @@ public class NodeList {
     
     public void SortNodes() {
         int count = 0;
-        Node start = Head, node, prev, temp;
+        Node? start = Head;
         while(start != null) {
             count++;
             start = start.Next;
         }
         
         for(int i = 0; i < count; ++i) {
-            node = prev = Head;
+            Node? prev;
+            Node? node = prev = Head;
             while(node != null && node.Next != null) {
                 if(node.Value < node.Next.Value) {
-                    temp = node.Next;
+                    Node? temp = node.Next;
                     (node.Next, node.Next.Next) = (node.Next.Next, node);
                     if(node == Head) {
                         Head = temp;
                     } else {
-                        prev.Next = temp;
+                        prev!.Next = temp;
                     }
                 }
                 prev = node;
@@ -125,7 +126,7 @@ public class NodeList {
     public int Length {
         get {
             int l = 0;
-            Node node = Head;
+            Node? node = Head;
             while(node != null) {
                 l++;
                 node = node.Next;
@@ -133,20 +134,20 @@ public class NodeList {
             return l;
         }
         set {
-            Node node = Head;
+            Node? node = Head;
             value--;
             while(value > 0) {
-                if(node.Next == null)
-                    node.Next = new Node(0);
+                if(node?.Next == null)
+                    node!.Next = new Node(0);
                 node = node.Next;
                 value--;
             }
-            node.Next = null;
+            node!.Next = null;
         }
     }
     
     public static NodeList operator +(NodeList a, NodeList b) {
-        Node node = b.Head;
+        Node? node = b.Head;
         while(node != null) {
             a.AddLast(node.Value);
             node = node.Next;
@@ -155,7 +156,7 @@ public class NodeList {
     }
 
     public static NodeList operator +(NodeList a, int b) {
-        Node node = a.Head;
+        Node? node = a.Head;
         while(node != null) {
             node.Value += b;
             node = node.Next;
@@ -164,7 +165,7 @@ public class NodeList {
     }
     
     public static NodeList operator ++(NodeList a) {
-        Node node = a.Head;
+        Node? node = a.Head;
         while(node != null) {
             node.Value++;
             node = node.Next;
