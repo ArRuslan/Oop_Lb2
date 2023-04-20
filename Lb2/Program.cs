@@ -55,7 +55,7 @@ public class NodeList {
             return;
         while (Head != null && Head.Value == value)
             Head = Head.Next;
-        Node node = Head.Next;
+        Node node = Head;
         while(node.Next != null) {
             if(node.Next.Value == value)
                 node.Next = node.Next.Next;
@@ -106,7 +106,7 @@ public class NodeList {
         
         for(int i = 0; i < count; ++i) {
             node = prev = Head;
-            while(node.Next != null) {
+            while(node != null && node.Next != null) {
                 if(node.Value < node.Next.Value) {
                     temp = node.Next;
                     (node.Next, node.Next.Next) = (node.Next.Next, node);
@@ -200,6 +200,7 @@ public class Program {
         list.AddLast(1);
         list.AddLast(4);
         list.AddLast(5);
+        list.AddLast(-11);
         list.AddLast(1);
         list.AddLast(1);
         list.AddLast(6);
@@ -208,28 +209,37 @@ public class Program {
         list.AddFirst(1);
         list.AddFirst(1);
         list.AddFirst(1);
+        list.AddFirst(-50);
         
-        Console.WriteLine(list.toString()); // 1 1 1 1 15 5 58 1 2 3 1 4 5 1 1 6 1
+        Console.WriteLine($"List: {list.toString()}");
+        
         list.RemoveAllWithValue(1);
-        Console.WriteLine(list.toString()); // 15 5 58 2 3 4 5 6
+        Console.WriteLine($"Removed all nodes with Value=1: {list.toString()}");
+        
         list.RemoveAllWithPairValue();
-        Console.WriteLine(list.toString()); // 15 5 3 5
+        Console.WriteLine($"Removed all nodes with pair value #1: {list.toString()}");
+        
         list.AddFirst(2);
         list.AddFirst(2);
         list.AddFirst(2);
         list.AddFirst(2);
         list.RemoveAllWithPairValue();
-        Console.WriteLine(list.toString()); // 15 5 3 5
+        Console.WriteLine($"Removed all nodes with pair value #2: {list.toString()}");
+        
         list.Sort();
-        Console.WriteLine(list.toString()); // 15 5 5 3
+        Console.WriteLine($"Sorted (desc): {list.toString()}");
+        
         list.AddFirst(1);
         list.Sort();
-        Console.WriteLine(list.toString()); // 15 5 5 3 1
-        Console.WriteLine(list.Length);
+        Console.WriteLine($"Add 1 to beginning and sort: {list.toString()}");
+        
+        Console.WriteLine($"Length: {list.Length}");
         list.Length = 10;
-        Console.WriteLine(list.toString()); // 15 5 5 3 1 0 0 0 0 0
+        
+        Console.WriteLine($"Set length to 10: {list.Length}, list: {list.toString()}");
+        
         list.Length = 4;
-        Console.WriteLine(list.toString()); // 15 5 5 3
+        Console.WriteLine($"Set length to 4: {list.Length}, list: {list.toString()}");
         
         NodeList list2 = new NodeList();
         list2.AddLast(10);
@@ -242,13 +252,13 @@ public class Program {
         
         list += list2;
         
-        Console.WriteLine(list.toString()); // 15 5 5 3 10 45 24 1 3 55 64
-        
+        Console.WriteLine($"Add \"{list2.toString()}\" to list: {list.toString()}");
+
         list++;
-        Console.WriteLine(list.toString()); // 16 6 6 4 11 46 25 2 4 56 65
+        Console.WriteLine($"Increment list values: {list.toString()}");
         
         list += 10;
-        Console.WriteLine(list.toString()); // 26 16 16 14 21 56 35 12 14 66 75
+        Console.WriteLine($"Add 10 to list values: {list.toString()}");
     }
 }
 }
