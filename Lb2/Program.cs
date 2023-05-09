@@ -36,6 +36,16 @@ public class Node {
         Value = value;
         Next = next;
     }
+    
+    public string ToString(bool withNext=true) {
+        string next = Next != null ? (withNext ? Next.ToString() : "...") : "null";
+        return $"Node(Value={Value}, Next={next})";
+    }
+
+    public override string ToString() {
+        string next = Next != null ? Next.ToString(false) : "null";
+        return $"Node(Value={Value}, Next={next})";
+    }
 }
 
 public class NodeList {
@@ -61,7 +71,7 @@ public class NodeList {
             last.Next = new_node;
         }
     }
-    
+
     public string toString() {
         if(Head == null)
             return "";
@@ -79,8 +89,9 @@ public class NodeList {
             return;
         while (Head != null && Head.Value == value)
             Head = Head.Next;
+        if(Head == null) return;
         Node node = Head;
-        while(node.Next != null) {
+        while(node != null && node.Next != null) {
             if(node.Next.Value == value)
                 node.Next = node.Next.Next;
             else
@@ -93,15 +104,16 @@ public class NodeList {
             return;
         while (Head != null && Head.Value % 2 == 0)
             Head = Head.Next;
-        Node node = Head.Next;
-        while(node.Next != null) {
+        if(Head == null) return;
+        Node node = Head;
+        while(node != null && node.Next != null) {
             if(node.Next.Value % 2 == 0)
                 node.Next = node.Next.Next;
             else
                 node = node.Next;
         }
     }
-    
+
     public void Sort() { // Bubble sort, descending order
         if(Head == null) return;
         bool sorting = true;
@@ -195,33 +207,59 @@ public class NodeList {
         }
         return a;
     }
+    
+    public int this[int value] {
+        get {
+            Node? node = Head;
+            int result = 0;
+            while(node != null) {
+                if(node.Value == value)
+                    return result;
+                result++;
+                node = node.Next;
+            }
+            return -1;
+        }
+    }
+    
+    public Node? GetByIndex(int index) {
+        if(index < 0) return null;
+        
+        Node? node = Head;
+        for(int i = 0; i < index; i++) {
+            if(node == null) return null;
+            node = node.Next;
+        }
+        return node;
+    }
 }
 
 /*
-+. (1) Конструктор з одним параметром (число);
-+. (2) Конструктор з двома параметрами (число, посилання на наступний елемент);
-+. (4) Метод додавання нового елементу першим у список;
-+. (5) Не рекурсивний метод додавання нового елемента останнім у список;
-+. (19) Не рекурсивний метод видалення всіх елементів із заданим значенням;
-+. (24) Метод видалення всіх парних за значенням елементів;
-+. (26) Не рекурсивний метод друку елементів списку у прямому порядку у рядок;
-+. (38) Метод сортування елементів списку за зменшенням числових значень;
-+. (48) Властивість Length - довжина списку (при зчитуванні - повернути довжину списку, при записі - встановити довжину списку, додавши елементи зі значенням 0 або відсікаючи зайві елементи);
-+. (63) Перевизначити для списку операцію +
--. (79) Перевизначити для списку будь-яку операцію
++ (1) Конструктор з одним параметром (число);
++ (2) Конструктор з двома параметрами (число, посилання на наступний елемент);
++ (4) Метод додавання нового елементу першим у список;
++ (5) Не рекурсивний метод додавання нового елемента останнім у список;
++ (19) Не рекурсивний метод видалення всіх елементів із заданим значенням;
++ (24) Метод видалення всіх парних за значенням елементів;
++ (26) Не рекурсивний метод друку елементів списку у прямому порядку у рядок;
++ (38) Метод сортування елементів списку за зменшенням числових значень;
++ (48) Властивість Length - довжина списку (при зчитуванні - повернути довжину списку, при записі - встановити довжину списку, додавши елементи зі значенням 0 або відсікаючи зайві елементи);
++ (63) Перевизначити для списку операцію +
++ (79) Перевизначити для списку будь-яку операцію
+
+- (д-59) Індексатор з одним параметром, який дозволяє за значенням елемента знайти його порядковий номер у списку;
  */
 
 [ExcludeFromCodeCoverage]
 public class Program {
     public static void Main(string[] args) {
         NodeList list = new NodeList();
-        list.AddFirst(5);
-        list.AddFirst(15);
+        list.AddLast(59);
+        list.AddLast(56);
         list.AddLast(58);
-        list.AddLast(1);
-        list.AddLast(2);
-        list.AddLast(3);
-        list.AddLast(1);
+        list.AddLast(98);
+        list.AddLast(12);
+
         list.AddLast(4);
         list.AddLast(5);
         list.AddLast(-11);
@@ -234,55 +272,27 @@ public class Program {
         list.AddFirst(1);
         list.AddFirst(1);
         list.AddFirst(-50);
+        list.AddLast(999);
         
-        Console.WriteLine($"List: {list.toString()}");
+        Console.WriteLine($"Список: {list.toString()}");
         
-        list.RemoveAllWithValue(1);
-        Console.WriteLine($"Removed all nodes with Value=1: {list.toString()}");
+        int idx = list[-50];
+        Console.WriteLine($"Індекс елемента -50: {idx}, Перевірка: {list.GetByIndex(idx)}");
         
-        list.RemoveAllWithPairValue();
-        Console.WriteLine($"Removed all nodes with pair value #1: {list.toString()}");
+        idx = list[1];
+        Console.WriteLine($"Індекс елемента 1: {idx}, Перевірка: {list.GetByIndex(idx)}");
         
-        list.AddFirst(2);
-        list.AddFirst(2);
-        list.AddFirst(2);
-        list.AddFirst(2);
-        list.RemoveAllWithPairValue();
-        Console.WriteLine($"Removed all nodes with pair value #2: {list.toString()}");
+        idx = list[59];
+        Console.WriteLine($"Індекс елемента 59: {idx}, Перевірка: {list.GetByIndex(idx)}");
         
-        list.Sort();
-        Console.WriteLine($"Sorted (desc): {list.toString()}");
+        idx = list[6];
+        Console.WriteLine($"Індекс елемента 6: {idx}, Перевірка: {list.GetByIndex(idx)}");
         
-        list.AddFirst(1);
-        list.Sort();
-        Console.WriteLine($"Add 1 to beginning and sort: {list.toString()}");
+        idx = list[999];
+        Console.WriteLine($"Індекс елемента 999: {idx}, Перевірка: {list.GetByIndex(idx)}");
         
-        Console.WriteLine($"Length: {list.Length}");
-        list.Length = 10;
-        
-        Console.WriteLine($"Set length to 10: {list.Length}, list: {list.toString()}");
-        
-        list.Length = 4;
-        Console.WriteLine($"Set length to 4: {list.Length}, list: {list.toString()}");
-        
-        NodeList list2 = new NodeList();
-        list2.AddLast(10);
-        list2.AddLast(45);
-        list2.AddLast(24);
-        list2.AddLast(1);
-        list2.AddLast(3);
-        list2.AddLast(55);
-        list2.AddLast(64);
-        
-        list += list2;
-        
-        Console.WriteLine($"Add \"{list2.toString()}\" to list: {list.toString()}");
-
-        list++;
-        Console.WriteLine($"Increment list values: {list.toString()}");
-        
-        list += 10;
-        Console.WriteLine($"Add 10 to list values: {list.toString()}");
+        idx = list[1000];
+        Console.WriteLine($"Індекс елемента 100 (немає в списку): {idx}, Перевірка: {list.GetByIndex(idx)}");
     }
 }
 }

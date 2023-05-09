@@ -46,6 +46,9 @@ public class Tests {
         NodeList list2 = new NodeList();
         list2.RemoveAllWithValue(1);
         Assert.AreEqual("", list2.toString());
+        list2.AddLast(1);
+        list2.RemoveAllWithValue(1);
+        Assert.AreEqual("", list2.toString());
     }
 
     [Test]
@@ -62,6 +65,9 @@ public class Tests {
         NodeList list2 = new NodeList();
         list2.RemoveAllWithPairValue();
         Assert.AreEqual("", list2.toString());
+        list2.AddLast(2);
+        list2.RemoveAllWithPairValue();
+        Assert.AreEqual("", list2.toString());
     }
     
     [Test]
@@ -72,6 +78,12 @@ public class Tests {
         NodeList list2 = new NodeList();
         list2.Sort();
         Assert.AreEqual("", list2.toString());
+        list2.AddLast(1);
+        list2.Sort();
+        Assert.AreEqual("1", list2.toString());
+        list2.AddLast(2);
+        list2.Sort();
+        Assert.AreEqual("2 1", list2.toString());
     }
 
     [Test]

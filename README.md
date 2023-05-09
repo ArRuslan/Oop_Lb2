@@ -1,2 +1,2 @@
-﻿# Лабороторна робота з ООП №1. Варіант 1
+﻿# Лабороторна робота з ООП №2. Варіант 1
 [![wakatime](https://wakatime.com/badge/user/a995924e-72c2-4d7b-9983-240ede99d1e3/project/0b410562-e51b-4085-8706-e2e6f4954aaf.svg)](https://wakatime.com/badge/user/a995924e-72c2-4d7b-9983-240ede99d1e3/project/0b410562-e51b-4085-8706-e2e6f4954aaf)
